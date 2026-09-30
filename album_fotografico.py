@@ -1,6 +1,30 @@
+import csv
+
 def carica_da_file(file_path):
     """Carica le foto dal file, creando un nuovo anno ogni volta che compare per la prima volta"""
-    # TODO
+
+    with open(file_path, "r") as f:
+        reader=csv.DictReader(f)
+
+        lista=[]
+
+        for row in reader:
+            #print(row.keys())
+
+            if row[" anno"] not in lista:
+                lista.append(row[" anno"])
+            year=[]
+            for anno in lista:
+                if row[" anno"]==anno:
+                    year.append(row)
+            lista.append(year)
+
+        for el in lista:
+            #print(" ".join(el.values()))
+            #print(type(el))
+            print(el)
+
+
 
 
 def aggiungi_foto(album, codice, titolo, autore, mese, anno, file_path):

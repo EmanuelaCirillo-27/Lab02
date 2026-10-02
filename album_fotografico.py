@@ -2,27 +2,25 @@ import csv
 
 def carica_da_file(file_path):
     """Carica le foto dal file, creando un nuovo anno ogni volta che compare per la prima volta"""
+    try:
+        with open(file_path, "r") as f:
+            reader=csv.DictReader(f)
 
-    with open(file_path, "r") as f:
-        reader=csv.DictReader(f)
+            album={}
+            for row in reader:
+                if row[' anno'] not in album:
+                    album[row[' anno']]=[]
+                    album[row[' anno']].append(row)
+                else:
+                    album[row[' anno']].append(row)
 
-        lista=[]
+            return album
 
-        for row in reader:
-            #print(row.keys())
 
-            if row[" anno"] not in lista:
-                lista.append(row[" anno"])
-            year=[]
-            for anno in lista:
-                if row[" anno"]==anno:
-                    year.append(row)
-            lista.append(year)
 
-        for el in lista:
-            #print(" ".join(el.values()))
-            #print(type(el))
-            print(el)
+    except FileNotFoundError:
+        return None
+
 
 
 
@@ -60,6 +58,11 @@ def main():
             while True:
                 file_path = input("Inserisci il path del file da caricare: ").strip()
                 album = carica_da_file(file_path)
+                for el in album:
+                    print(el)
+                    for i in range(len(album[el])):
+                        print(album[el][i])
+
                 if album is not None:
                     break
 

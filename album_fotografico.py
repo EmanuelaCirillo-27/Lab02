@@ -6,6 +6,9 @@ def carica_da_file(file_path):
         with open(file_path, "r") as f:
             reader=csv.DictReader(f)
 
+            #L'idea è quella di creare un dizionario album nel quale inserisco gli anni,
+            #i quali a loro volta sono delle liste che contengono le informazioni delle
+            #foto relative a quell'anno
             album={}
             for row in reader:
                 if row[' anno'] not in album:
@@ -13,6 +16,11 @@ def carica_da_file(file_path):
                     album[row[' anno']].append(row)
                 else:
                     album[row[' anno']].append(row)
+            # Una volta aperto il file itero sulle singole righe che contengono le
+            # informazioni, in particolare inizialmente mi concentro solo sull'anno,
+            # se esso non è presente nel mio album allora creo l'anno nell'album come lista
+            # nel quale poi inserirò quella foto, altrimenti inserisco direttamente la
+            #foto nella lista che riguarda l'anno
 
             return album
 

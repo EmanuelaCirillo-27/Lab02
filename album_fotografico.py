@@ -1,3 +1,4 @@
+
 import csv
 
 def carica_da_file(file_path):
@@ -84,7 +85,17 @@ def cerca_foto(album, codice):
 
 def elenco_foto_anno_per_titolo(album, anno):
     """Ordina i titoli delle foto di un dato anno in ordine alfabetico"""
-    # TODO
+    if anno not in album:
+        return None
+    titoli_anno=[]
+    foto_anno=album[anno]
+    for el in foto_anno:
+        titoli_anno.append(el[' titolo'])
+
+    titoli_ordinati=sorted(titoli_anno)
+
+    return titoli_ordinati
+
 
 
 def main():
@@ -157,7 +168,7 @@ def main():
                 continue
 
             try:
-                anno = int(input("Inserisci l'anno da consultare: ").strip())
+                anno = input("Inserisci l'anno da consultare: ").strip()
             except ValueError:
                 print("Errore: inserire un valore numerico valido.")
                 continue

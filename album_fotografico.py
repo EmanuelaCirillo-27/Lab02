@@ -3,7 +3,7 @@ import csv
 def carica_da_file(file_path):
     """Carica le foto dal file, creando un nuovo anno ogni volta che compare per la prima volta"""
     try:
-        with open(file_path, "r") as f:
+        with open(file_path, "r", newline='', encoding='utf-8') as f:
             reader=csv.DictReader(f)
 
             #L'idea è quella di creare un dizionario album nel quale inserisco gli anni,
@@ -35,7 +35,41 @@ def carica_da_file(file_path):
 
 def aggiungi_foto(album, codice, titolo, autore, mese, anno, file_path):
     """Aggiunge una foto all'album, creando l'anno al volo se non è ancora presente"""
-    # TODO
+    try:
+        if mese < 1 or mese > 12:
+            return None
+        for el in album:
+            for photo in album[el]:
+                if photo['codice'] == codice:
+                    return None
+
+        foto={
+            'codice': codice,
+            ' titolo': titolo,
+            ' autore': autore,
+            ' mese': mese,
+            ' anno': anno,
+        }
+
+        with open(file_path, "a", newline='', encoding='utf-8') as f:
+
+            writer = csv.DictWriter(f, fieldnames=foto.keys())
+            writer.writerow(foto)
+
+
+            if anno not in album:
+                album[anno]=[]
+                album[anno].append(foto)
+            else:
+                album[anno].append(foto)
+
+        return foto,album
+
+    except FileNotFoundError:
+        return None
+
+
+
 
 
 def cerca_foto(album, codice):
@@ -84,13 +118,18 @@ def main():
             autore = input("Autore: ").strip()
             try:
                 mese = int(input("Mese (1-12): ").strip())
-                anno = int(input("Anno: ").strip())
+                anno = input("Anno: ").strip()
             except ValueError:
                 print("Errore: inserire valori numerici validi per mese e anno.")
                 continue
 
-            foto = aggiungi_foto(album, codice, titolo, autore, mese, anno, file_path)
+            foto,album_nuovo = aggiungi_foto(album, codice, titolo, autore, mese, anno, file_path)
             if foto:
+                for el in album:
+                    print(el)
+                    for i in range(len(album[el])):
+                        print(album[el][i])
+
                 print(f"Foto aggiunta con successo!")
             else:
                 print("Non è stato possibile aggiungere la foto.")
